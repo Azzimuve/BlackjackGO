@@ -130,7 +130,7 @@ func (game Game) DealCards() {
 	game.Dealer.Hand = append(game.Dealer.Hand, game.Deck.DrawCard(), game.Deck.DrawCard())
 }
 
-// Подсчет значения руки
+// Считаем значения руки
 func (player Player) CountHandValue() Value {
 	var value Value
 	var ace Value
