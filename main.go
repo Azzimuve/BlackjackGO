@@ -151,6 +151,7 @@ func (player Player) CountHandValue() Value {
 	return value
 }
 
+// стартуем
 func main() {
 	game := CreateGame()
 	game.AddPlayer("Stepan", 1000)
