@@ -6,7 +6,7 @@ import (
 
 // Игра
 type Game struct {
-	Players []Player
+	Players []*Player
 	Dealer  *Dealer
 	Deck    *Deck
 	Bank    int
@@ -25,7 +25,7 @@ func CreateGame() *Game {
 
 // Добавление в игру игрока
 func (game *Game) AddPlayer(name string, balance int) {
-	game.Players = append(game.Players, Player{Name: name, Balance: balance})
+	game.Players = append(game.Players, &Player{Name: name, Balance: balance})
 }
 
 // Раздача 2 карт всем участникам

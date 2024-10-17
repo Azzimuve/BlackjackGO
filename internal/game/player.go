@@ -23,6 +23,16 @@ func (game *Game) PrintPlayers() {
 	fmt.Println(game.Players)
 }
 
+// Делаем ставку
+func Bet(player *Player, bet int) {
+	if player.Balance < bet {
+		fmt.Println("У вас недостаточно средств")
+	} else {
+		player.Balance -= bet
+		player.CurrentBet += bet
+	}
+}
+
 // Считаем значения руки
 func (player Player) CountHandValue() Value {
 	var value Value

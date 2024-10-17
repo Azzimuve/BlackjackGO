@@ -16,9 +16,9 @@ func main() {
 	game.PrintPlayers()
 
 	for _, player := range game.Players {
-		fmt.Println(player.CountHandValue())
+		fmt.Println(player.Balance, "ставка ", player.CurrentBet)
+		g.Bet(player, 500)
+		fmt.Println(player.Balance, "ставка ", player.CurrentBet)
 	}
-	fmt.Println(game.Dealer.Hand)
-	fmt.Println(game.Dealer.CountHandValue())
 
 }
