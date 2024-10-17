@@ -113,7 +113,7 @@ func (game *Game) AddPlayer(name string, balance int) {
 	game.Players = append(game.Players, Player{Name: name, Balance: balance})
 }
 
-// вытягиваем карту из колоды
+// Вытягиваем карту из колоды
 func (deck *Deck) DrawCard() Card {
 	card := deck.Cards[0]
 	deck.Cards = deck.Cards[1:]
