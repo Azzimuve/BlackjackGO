@@ -17,7 +17,7 @@ func main() {
 
 	for _, player := range game.Players {
 		fmt.Println(player.Balance, "ставка ", player.CurrentBet)
-		g.Bet(player, 500)
+		player.Bet(500)
 		fmt.Println(player.Balance, "ставка ", player.CurrentBet)
 	}
 

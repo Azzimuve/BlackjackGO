@@ -24,7 +24,7 @@ func (game *Game) PrintPlayers() {
 }
 
 // Делаем ставку
-func Bet(player *Player, bet int) {
+func (player *Player) Bet(bet int) {
 	if player.Balance < bet {
 		fmt.Println("У вас недостаточно средств")
 	} else {
