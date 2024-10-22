@@ -1,7 +1,6 @@
 package deck
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -44,9 +43,8 @@ type Deck struct {
 	Cards []Card
 }
 
-// Выводим колоду
-func (deck *Deck) PrintDeck() {
-	fmt.Println(deck.Cards)
+type DeckService struct {
+	Deck *Deck
 }
 
 // Создание колоды

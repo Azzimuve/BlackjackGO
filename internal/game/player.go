@@ -11,6 +11,8 @@ type Player struct {
 	Hand       []Card
 	Balance    int
 	CurrentBet int
+	Deck       *Deck
+	Ai         bool
 }
 
 // Дилер
@@ -24,13 +26,28 @@ func (game *Game) PrintPlayers() {
 }
 
 // Делаем ставку
-func (player *Player) Bet(bet int) {
+func (player *Player) Bet(bet int) bool {
 	if player.Balance < bet {
 		fmt.Println("У вас недостаточно средств")
+		return false
 	} else {
 		player.Balance -= bet
 		player.CurrentBet += bet
+		return true
 	}
+}
+
+// Добираем карту
+func (player *Player) Hit() {
+	player.Hand = append(player.Hand, player.Deck.DrawCard())
+}
+
+// Удваиваем ставку и добираем карту
+func (player *Player) Double() {
+	if player.Bet(player.CurrentBet) {
+		player.Hit()
+	}
+
 }
 
 // Считаем значения руки
