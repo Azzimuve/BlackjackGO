@@ -31,36 +31,51 @@ func (game *Game) AddPlayer(name string, balance int, ai bool) {
 
 // Раздача 2 карт всем участникам
 func (game Game) DealCards() {
+
 	//Раздача карт игрокам
 	for _, player := range game.Players {
 		player.Hand = append(player.Hand, game.Deck.DrawCard(), game.Deck.DrawCard())
 	}
+
 	//Раздача карт дилеру
 	game.Dealer.Hand = append(game.Dealer.Hand, game.Deck.DrawCard(), game.Deck.DrawCard())
 }
 
+// Начинаем раунд и выводим 1 карту диллера
 func (game *Game) StartRound() {
 	fmt.Println(game.Dealer.Name, " карты дилера: ", game.Dealer.Hand[0], ", ***")
+
+	// Кажый игрок ставит по 200 монет
 	for _, player := range game.Players {
 		player.Bet(200)
-		fmt.Println("Игрок: ", player.Name)
-		fmt.Println("Текущая рука: ", player.Hand, " Сумма карт: ", player.CountHandValue())
+		player.PrintInfo()
+
+		// Логика ботов
 		if player.Ai {
 			handValue := player.CountHandValue()
 			if handValue > 14 && handValue <= 17 {
 				player.Hit()
 				fmt.Println(player.Name, " берет карту")
-				fmt.Println("Текущая рука: ", player.Hand, " Сумма карт: ", player.CountHandValue(), " Ставка: ", player.CurrentBet)
+				player.PrintInfo()
 
 			} else if handValue > 10 && handValue <= 14 {
 				player.Double()
 				fmt.Println(player.Name, " удваивает ставку и берет карту")
-				fmt.Println("Текущая рука: ", player.Hand, " Сумма карт: ", player.CountHandValue(), " Ставка: ", player.CurrentBet)
+				player.PrintInfo()
 			}
+		} else {
+			{
+				// Если игрок не управляется компьютером - даем ему право выбора
+				player.PlayerChoose()
+			}
+
 		}
 		fmt.Println("-------------------------------------------")
 	}
-	fmt.Println("Карты дилера: ", game.Dealer.Hand, "Сумма карт: ")
+
+	fmt.Println("Карты дилера: ", game.Dealer.Hand, "Сумма карт: ", game.Dealer.CountHandValue())
+
+	// Диллер добирает карты если их сумма меньше 17
 	for game.Dealer.CountHandValue() < 17 {
 		game.Dealer.Hit()
 		fmt.Println("Диллер добирает карту")

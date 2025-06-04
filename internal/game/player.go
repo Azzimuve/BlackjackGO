@@ -37,21 +37,30 @@ func (player *Player) Bet(bet int) bool {
 	}
 }
 
+// Выводим информацию об игроке
+func (player *Player) PrintInfo() {
+	fmt.Println("Имя игрока: ", player.Name)
+	fmt.Println("Карты игрока: ", player.Hand, "Сумма карт: ", player.CountHandValue(), " Ставка: ", player.CurrentBet)
+}
+
 // Добираем карту
 func (player *Player) Hit() {
 	player.Hand = append(player.Hand, player.Deck.DrawCard())
 }
 
 // Удваиваем ставку и добираем карту
-func (player *Player) Double() {
+func (player *Player) Double() bool {
 	if player.Bet(player.CurrentBet) {
 		player.Hit()
+		return true
+	} else {
+		return false
 	}
 
 }
 
 // Считаем значения руки
-func (player Player) CountHandValue() Value {
+func (player *Player) CountHandValue() Value {
 	var value Value
 	var ace Value
 
@@ -69,4 +78,38 @@ func (player Player) CountHandValue() Value {
 	}
 
 	return value
+}
+
+// Даем выбор игроку только если сумма карт меньше 21
+func (player *Player) PlayerChoose() {
+	if player.CountHandValue() < 21 {
+		var choose string
+		fmt.Println("Напишите если вы хотите:\n h - взять карту\n d - удвоить ставку и взять карту\n s - сбросить карты(Вам вернется половина от ставки)\n напишите любую другую букву чтобы продолжить")
+		_, err := fmt.Scanln(&choose)
+		if err != nil {
+			fmt.Println("Ошибка ввода:", err)
+			return
+		}
+
+		switch choose {
+		case "h":
+			fmt.Println("вы взяли карту")
+			player.Hit()
+			player.PrintInfo()
+			player.PlayerChoose()
+
+		case "d":
+			if player.Double() {
+				fmt.Println("вы удвоили ставку и взяли карту")
+				player.PrintInfo()
+			}
+
+		case "s":
+			fmt.Println("вы сбросили карты")
+
+		}
+	} else {
+		fmt.Println("Вы больше не можете брать карты")
+	}
+
 }
