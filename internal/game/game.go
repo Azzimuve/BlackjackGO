@@ -17,7 +17,7 @@ type Game struct {
 func CreateGame() *Game {
 	deck := CreateDeck()
 	deck.ShuffleDeck()
-	dealer := &Dealer{Player: Player{Name: "Dealer"}}
+	dealer := &Dealer{Player: Player{Name: "Dealer", Deck: deck}}
 	return &Game{
 		Deck:   deck,
 		Dealer: dealer,
@@ -40,20 +40,30 @@ func (game Game) DealCards() {
 }
 
 func (game *Game) StartRound() {
+	fmt.Println(game.Dealer.Name, " карты дилера: ", game.Dealer.Hand[0], ", ***")
 	for _, player := range game.Players {
-		player.Bet(600)
+		player.Bet(200)
+		fmt.Println("Игрок: ", player.Name)
+		fmt.Println("Текущая рука: ", player.Hand, " Сумма карт: ", player.CountHandValue())
 		if player.Ai {
 			handValue := player.CountHandValue()
 			if handValue > 14 && handValue <= 17 {
 				player.Hit()
-				fmt.Println(player.Hand)
-				fmt.Println("Hit", player.Name, player.CountHandValue(), player.CurrentBet)
+				fmt.Println(player.Name, " берет карту")
+				fmt.Println("Текущая рука: ", player.Hand, " Сумма карт: ", player.CountHandValue(), " Ставка: ", player.CurrentBet)
 
 			} else if handValue > 10 && handValue <= 14 {
 				player.Double()
-				fmt.Println(player.Hand)
-				fmt.Println("Double", player.Name, player.CountHandValue(), player.CurrentBet)
+				fmt.Println(player.Name, " удваивает ставку и берет карту")
+				fmt.Println("Текущая рука: ", player.Hand, " Сумма карт: ", player.CountHandValue(), " Ставка: ", player.CurrentBet)
 			}
 		}
+		fmt.Println("-------------------------------------------")
+	}
+	fmt.Println("Карты дилера: ", game.Dealer.Hand, "Сумма карт: ")
+	for game.Dealer.CountHandValue() < 17 {
+		game.Dealer.Hit()
+		fmt.Println("Диллер добирает карту")
+		fmt.Println("Карты диллера: ", game.Dealer.Hand, " Сумма карт: ", game.Dealer.CountHandValue())
 	}
 }
